@@ -20,61 +20,93 @@ var fight = function(enemyName) {
             window.alert(playerName + " has decided to skip this fight. Goodbye!");
             //subtract money form playerMoney for skipping
             playerMoney = playerMoney - 10;
-            console.log("playerMontey", playerMoney);
+            console.log("playerMoney", playerMoney);
             break;
             }
         }
+        else if (promptFight == "FIGHT" || promptFight == "fight"){
+            //Subtract the value of 'PlayerAttack' from the value of 'enemyHealth' and use that result to update the value in the 'enemyHealth' variable
+            enemyHealth = enemyHealth - playerAttack;
+            //Log a resulting message to the consoloe so we know that it worked.
+            console.log(
+            playerName + " attacked " + enemyName + ". " + enemyName + " now has " + enemyHealth + " health remaining.");
+            //Check enemy's health
+            if (enemyHealth <= 0) {
+                window.alert(enemyName + " has died.");
+                //award money for winning
+                playerMoney = playerMoney + 20;
+                //leave while() loop since enemy is dead
+                break;
+            }
+            else {
+                window.alert(enemyName  + " still has " +enemyHealth + " health left");
+            }
 
-        //Subtract the value of 'PlayerAttack' from the value of 'enemyHealth' and use that result to update the value in the 'enemyHealth' variable
-        enemyHealth = enemyHealth - playerAttack;
-        //Log a resulting message to the consoloe so we know that it worked.
-        console.log(
-        playerName + " attacked " + enemyName + ". " + enemyName + " now has " + enemyHealth + " health remaining.");
-        //Check enemy's health
-        if (enemyHealth <= 0) {
-            window.alert(enemyName + " has died.");
-            //award money for winning
-            playerMoney = playerMoney + 20;
-            //leave while() loop since enemy is dead
-            break;
+            //Subtract the value of 'enemyAttac from the value of 'playerHealth' and use that resukt to update the value in the 'playerHealth' variable
+            playerHealth = playerHealth - enemyAttack;
+
+            //Log a resulting message to the console so we know that it worked
+            console.log(
+                enemyName + " attacked " + playerName + ". " + playerName + " now has " + playerHealth + " health remaining.");
+            //Check player's health
+            if(playerHealth <= 0) {
+                window.alert(playerName + " has died!");
+                //leave while() lop if playeris dead
+                break;
+            }
+            else {
+                window.alert(playerName + " still has " + playerHealth + " health left.");
+            }
         }
         else {
-            window.alert(enemyName  + " still has " +enemyHealth + " health left");
-        }
-
-        //Subtract the value of 'enemyAttac from the value of 'playerHealth' and use that resukt to update the value in the 'playerHealth' variable
-        playerHealth = playerHealth - enemyAttack;
-
-        //Log a resulting message to the console so we know that it worked
-        console.log(
-            enemyName + " attacked " + playerName + ". " + playerName + " now has " + playerHealth + " health remaining.");
-        //Check player's health
-        if(playerHealth <= 0) {
-            window.alert(playerName + " has died!");
-            //leave while() lop if playeris dead
-            break;
-        }
-        else {
-            window.alert(playerName + " still has " + playerHealth + " health left.");
+            window.alert("You need to choose a valid option. Try again.")
         }
     } // end of while loop
 }; // end of fight function
+var startGame= function() {
+    //reset player stats
+    playerAttack ==10;
+    playerHealth = 100;
+    playerMoney = 10;
 
-for (var i = 0; i < enemyNames.length; i++) {
+    for (var i = 0; i < enemyNames.length; i++) {
+        if (playerHealth > 0) {
+            window.alert("Welcome to Robot Gladiators! Round " + (i + 1));
+
+            var pickedEnemyName = enemyNames[i];
+
+            enemyHealth= 50;
+
+            debugger;
+
+        fight(pickedEnemyName);
+        }
+        else {
+            window.alert("You have lost your robot in battle! Gave Over!");
+            break;
+        }
+    }
+    //play again
+    endGame();
+}
+//function to en the entire game
+var endGame = function() {
+    //if player is still alive, player wins!
     if (playerHealth > 0) {
-        window.alert("Welcome to Robot Gladiators! Round " + (i + 1));
-
-        var pickedEnemyName = enemyNames[i];
-
-        enemyHealth= 50;
-
-        debugger;
-
-       fight(pickedEnemyName[i]);
+        window.alert("Great job, you've survived the game! You now have a score of " + playerMoney + ".");
     }
     else {
-        window.alert("You have lost your robot in battle! Gave Over!");
-        break;
+        window.alert("You've lost your robt in battle.");
+    }
+    //ask player if they'd like to play again
+    var playAgainConfirm = window.confirm("Would you like to play again?");
+    if(playAgainConfirm) {
+        //restart the game
+        startGame();
+    }
+    else {
+        window.alert("Thank you for playing Robot Gladiators! Come back soon!")
     }
 }
-//fight ();
+//start game when page loads
+startGame();
