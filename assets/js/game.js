@@ -55,24 +55,35 @@ var enemyInfo = [
         attack: randomNumber(10, 14)
     }
 ];
+var fightOrSkip = function {
+    //ask player if they'd like to fight or skip using fightOrSkip function
+    var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" ir "SKIP to choose');
+    if(!promptFight) {
+        window.alert("You need a valid answer! Please try again.");
+        return fightOrSkip;
+    }
+    promptFight = promptFight.toLowerCase();
+    //if player picks "skip" confirm and then stoop loop
+    if(promptFight === "skip") {
+        //confirm skip
+        var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+        //if yes (true), leave fight
+        if (confirmSkip) {
+            window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
+            //subtract money from playerMoney for skipping
+            playerInfo.playerMoney = playerInfo.money - 10;
+            return true
+            shop();
+        }
+    }
+    return false;
+}
 var fight = function(enemy) {
    //Alert players that they are starting the round
     while(playerInfo.health > 0 && enemy.health > 0) {
-        var promptFight = window.prompt("would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
-
-        if (promptFight === "skip" || promptFight === "SKIP") {
-            //confirm player wants to skip
-            var confirmSkip = window.confirm("Are you sure you'd like to quit?");
-            //if yes (true), leave fight
-            if (confirmSkip) {
-                window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
-                //subtract money form player.Info.money for skipping
-                playerInfo.money = Math.max(0, playerInfo.money - 10);
-                console.log('skip');
-                break;
-            }
+        if (fightOrSkip()); {
+            break;
         }
-        else if (promptFight == "FIGHT" || promptFight == "fight"){
             //Subtract the value of 'player.Info.attack' from the value of 'enemy.health' and use that result to update the value in the 'enemy.health' variable
             //generate random damage value based on player's attack power
             var damage = randomNumber(playerInfo.attack - 3,playerInfo.attack);
